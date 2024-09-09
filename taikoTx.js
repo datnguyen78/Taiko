@@ -68,10 +68,12 @@ const separateBatch = () => {
   return chunks;
 };
 
+let totalTxCount = 0; // Initialize transaction counter
+
 async function sendNft(fromPrivateKey) {
   try {
-    console.log(`Processing privateKey: ${fromPrivateKey}...`);
-    
+    console.log(`Processing privateKey: ${fromPrivateKey.slice(0, 6)}...`);
+
     // Create a provider instance
     const provider = new ethers.JsonRpcProvider("https://rpc.ankr.com/taiko");
 
@@ -85,11 +87,13 @@ async function sendNft(fromPrivateKey) {
     await contract.balanceOf(fromWallet.address, options);
 
     // Add a random delay between transactions
-    await waitRandom(30000, 60000); // Wait exactly 2 minutes (120 seconds)
+    await waitRandom(30000, 60000); // Wait exactly 1 minute (120 seconds)
 
-    console.log(`Processed privateKey ${fromPrivateKey} successfully`);
+    // Increment the transaction count
+    totalTxCount++;
+    console.log(`Processed privateKey ${fromPrivateKey.slice(0, 6)} successfully. Total Transactions: ${totalTxCount}`);
   } catch (error) {
-    console.error(`Error processing privateKey: ${fromPrivateKey}: ${error}`);
+    console.error(`Error processing privateKey: ${fromPrivateKey.slice(0, 6)}: ${error}`);
   }
 }
 
@@ -111,6 +115,8 @@ const processBatch = async () => {
   for (let i = 0; i < chunks.length; i++) {
     await sendChunk(chunks[i]); // Ensure batches are processed sequentially
   }
+
+  console.log(`\nAll transactions completed. Total Transactions Processed: ${totalTxCount}`);
 };
 
 processBatch();
