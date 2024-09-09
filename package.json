@@ -1,0 +1,13 @@
+{
+    "name": "Taiko Bot",
+    "version": "1.0.0",
+    "description": "Using to automatically send TX on Taiko chain",
+    "main": "taikoTx.js",
+    "scripts": {
+        "start": "node taikoTx.js"
+    },
+    "dependencies": {
+        "ethers": "^6.0.0",
+        "line-reader": "^0.4.0"
+    }
+}
